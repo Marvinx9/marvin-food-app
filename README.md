@@ -1,6 +1,6 @@
 # MarvinFood
 
-O MarvinFood é um site que lista restaurantes e pratos do menu. 
+O MarvinFood é um site que lista restaurantes e pratos do menu.
 É um MVP que tá só começando e ainda tem muitas funcionalidades novas para serem desenvolvidas.
 
 <img src="screencapture.png" alt="Imagem do MarvinFood" width="50%">
@@ -12,6 +12,7 @@ Se liga nessa lista de tudo que usaremos nesse treinamento:
 - `React`
 - `React Hooks`
 - `TypeScript`
+- `MUI Material-UI`
 - `axios`
 
 ## 🛠️ Abrir e rodar o projeto
