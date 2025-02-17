@@ -2,8 +2,8 @@ import { useEffect, useState } from "react";
 import IRestaurante from "../../interfaces/IRestaurante";
 import style from "./ListaRestaurantes.module.scss";
 import Restaurante from "./Restaurante";
-import axios from "axios";
 import { IPaginacao } from "../../interfaces/IPaginacao";
+import http from "../../http";
 
 const ListaRestaurantes = () => {
   const [restaurantes, setRestaurantes] = useState<IRestaurante[]>([]);
@@ -15,7 +15,7 @@ const ListaRestaurantes = () => {
   const [paginaAnterior, setPaginaAnterior] = useState("");
 
   const carregandoDados = (url: string) => {
-    axios
+    http
       .get<IPaginacao<IRestaurante>>(url)
       .then((resposta) => {
         setRestaurantes(resposta.data.results);
@@ -29,7 +29,7 @@ const ListaRestaurantes = () => {
   };
 
   useEffect(() => {
-    carregandoDados("http://localhost:8000/api/v1/restaurantes/");
+    carregandoDados("v1/restaurantes/");
   }, []);
 
   useEffect(() => {
