@@ -41,10 +41,15 @@ const FormularioRestaurante = () => {
 
   return (
     <Box
-      sx={{ display: "flex", flexDirection: "column", alignItems: "center" }}
+      sx={{
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        flexGrow: 1,
+      }}
     >
       <Typography component="h1" variant="h6"></Typography>
-      <Box component="form" onSubmit={aoSubmeterForm}>
+      <Box component="form" sx={{ width: "100%" }} onSubmit={aoSubmeterForm}>
         Formulário de Restaurantes
         <TextField
           value={nomeRestaurante}
