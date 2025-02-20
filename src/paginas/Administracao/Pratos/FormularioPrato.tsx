@@ -12,8 +12,12 @@ import { useEffect, useState } from "react";
 import ITag from "../../../interfaces/ITag";
 import http from "../../../http";
 import IRestaurante from "../../../interfaces/IRestaurante";
+import { useParams } from "react-router-dom";
+import IPrato from "../../../interfaces/IPrato";
 
 const FormularioPrato = () => {
+  const parametros = useParams();
+
   const [nomePrato, setNomePrato] = useState("");
   const [descricao, setDescricao] = useState("");
   const [tag, setTag] = useState("");
@@ -31,6 +35,37 @@ const FormularioPrato = () => {
       .then((resposta) => setRestaurantes(resposta.data));
   }, []);
 
+  useEffect(() => {
+    const carregarDados = async () => {
+      try {
+        const [resRestaurantes] = await Promise.all([
+          http.get<IRestaurante[]>("v2/restaurantes/"),
+        ]);
+
+        setRestaurantes(resRestaurantes.data);
+
+        if (parametros.id) {
+          const resPrato = await http.get<IPrato>(
+            `v2/pratos/${parametros.id}/`
+          );
+          setNomePrato(resPrato.data.nome);
+          setDescricao(resPrato.data.descricao);
+          setTag(resPrato.data.tag);
+
+          const restauranteSelecionado = resRestaurantes.data.find(
+            (r) => r.id === resPrato.data.restaurante
+          );
+          setRestaurante(
+            restauranteSelecionado ? restauranteSelecionado.id.toString() : ""
+          );
+        }
+      } catch (error) {
+        console.error("Erro ao carregar dados", error);
+      }
+    };
+
+    carregarDados();
+  }, [parametros.id]);
   const selecionarArquivo = (evento: React.ChangeEvent<HTMLInputElement>) => {
     if (evento.target.files?.length) {
       setImagem(evento.target.files[0]);
@@ -53,23 +88,38 @@ const FormularioPrato = () => {
       formData.append("imagem", imagem);
     }
 
-    http
-      .request({
-        url: "v2/pratos/",
-        method: "POST",
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
-        data: formData,
-      })
-      .then(() => {
-        setNomePrato("");
-        setRestaurante("");
-        setTag("");
-        setDescricao("");
-        alert("prato cadastrado com sucesso!");
-      })
-      .catch((error) => console.log(error));
+    if (parametros.id) {
+      http
+        .request({
+          url: `v2/pratos/${parametros.id}/`,
+          method: "PUT",
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+          data: formData,
+        })
+        .then(() => {
+          alert("Prato atualizado com sucesso!");
+        });
+    } else {
+      http
+        .request({
+          url: "v2/pratos/",
+          method: "POST",
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+          data: formData,
+        })
+        .then(() => {
+          setNomePrato("");
+          setRestaurante("");
+          setTag("");
+          setDescricao("");
+          alert("prato cadastrado com sucesso!");
+        })
+        .catch((error) => alert(error.message));
+    }
   };
 
   return (

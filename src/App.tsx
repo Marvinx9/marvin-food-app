@@ -19,6 +19,7 @@ function App() {
         <Route path="restaurantes/:id" element={<FormularioRestaurante />} />
         <Route path="pratos" element={<AdministracaoPratos />} />
         <Route path="prato/novo" element={<FormularioPrato />} />
+        <Route path="pratos/:id" element={<FormularioPrato />} />
       </Route>
     </Routes>
   );

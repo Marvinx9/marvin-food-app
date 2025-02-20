@@ -27,7 +27,7 @@ const PaginaBaseAdmin = () => {
               <Link component={RouterLink} to="/admin/pratos">
                 <Button sx={{ my: 2, color: "white" }}>Pratos</Button>
               </Link>
-              <Link component={RouterLink} to="/admin/pratos/novo">
+              <Link component={RouterLink} to="/admin/prato/novo">
                 <Button sx={{ my: 2, color: "white" }}>Novo Prato</Button>
               </Link>
             </Box>
